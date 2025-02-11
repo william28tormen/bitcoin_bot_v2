@@ -29,11 +29,13 @@ def ao_receber_mensagem(ws, mensagem):
     price = mensagem["data"]["price"]
     print(price)
 
-def comprar():
-    pass
+    if price > 9000:
+        vender()
+    elif price < 9100:
+        comprar()
+    else:
+        print('Aguardar!')
 
-def vender():
-    pass
 
 if __name__ == "__main__":
     ws = websocket.WebSocketApp("wss://ws.bitstamp.net/",
