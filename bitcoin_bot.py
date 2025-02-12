@@ -3,12 +3,12 @@ import websocket
 import bitstamp.client
 import secretpass
 
-
 def cliente():
     return bitstamp.client.Trading(username=secretpass.USERNAME, key=secretpass.KEY, secret=secretpass.SECRET)
 
 def ao_abrir(ws):
     print('Conexão estabelecida com sucesso!')
+    print('---------------------------------')
 
     json_subscribe = """    
 {
@@ -29,16 +29,16 @@ def vender(quantidade):
     trading_client.sell_market_order(quantidade)
 
 def ao_fechar(ws):
+    print('---------------------------------')
     print('Conexão encerrada!')
 
-def erro(ws, erro):
+def error(ws, error):
     print('---------------------------------')
     print('Algo deu errado!')
-    print('---------------------------------')
 
 def ao_receber_mensagem(ws, mensagem):
     mensagem = json.loads(mensagem)
-    price = mensagem["data"]["price"]
+    price = mensagem['data']['price']
     print(price)
 
     if price > 500000:
@@ -52,6 +52,7 @@ if __name__ == "__main__":
     ws = websocket.WebSocketApp("wss://ws.bitstamp.net/",
                                 on_open=ao_abrir,
                                 on_message=ao_receber_mensagem,
-                                on_error=erro,
+                                on_error=error,
                                 on_close=ao_fechar
                                 )
+ws.run_forever()
